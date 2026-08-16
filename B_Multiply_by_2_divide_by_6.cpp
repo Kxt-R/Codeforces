@@ -20,30 +20,22 @@ using pll = pair<ll, ll>;
 const int MOD = 1e9 + 7;
 const ll INF  = 4e18;
 
- 
 void solve() {
-    int n, m;
-    cin >> n >> m;
-    vector<int> limit(n + 1, n+1);
-
-    for(int i=0;i<m;i++){
-        int u,v;
-        cin>>u>>v;
-        if(u>v) swap(u,v);
-
-        limit[u]=min(limit[u],v);
+    int n;cin>>n;
+    int count3=0,count2=0;
+    while(n%3==0){
+        count3++;
+        n/=3;
     }
-
-    for(int i=n-1;i>=1;i--){
-        limit[i]=min(limit[i+1],limit[i]);
+    while(n%2==0){
+        count2++;
+        n/=2;
     }
-    ll total=0;
-
-    for(int i=1;i<=n;i++){
-        total+=limit[i]-i;
+    if(n!=1 or count2>count3){
+        cout<<-1<<'\n';
+        return;
     }
-    cout<<total<<'\n';
-
+    cout<<2*count3-count2<<'\n';
 }
 
 int main() {

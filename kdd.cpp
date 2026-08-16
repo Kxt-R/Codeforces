@@ -20,30 +20,32 @@ using pll = pair<ll, ll>;
 const int MOD = 1e9 + 7;
 const ll INF  = 4e18;
 
- 
 void solve() {
-    int n, m;
-    cin >> n >> m;
-    vector<int> limit(n + 1, n+1);
-
-    for(int i=0;i<m;i++){
-        int u,v;
-        cin>>u>>v;
-        if(u>v) swap(u,v);
-
-        limit[u]=min(limit[u],v);
+    int n,k;cin>>n>>k;
+    bool primes[1001];
+    fill(primes,primes+n+1,true);
+    primes[0] = primes[1] = false;
+    int count=0;
+    for(int i=2;i*i<=n;i++){
+        if(primes[i]){
+            for(int j=i*i;j<=n;j+=i){
+                primes[j]=false;
+            }
+        }
     }
-
-    for(int i=n-1;i>=1;i--){
-        limit[i]=min(limit[i+1],limit[i]);
+    int i=2;
+    while(i<=n){
+        int p1=i;
+        i++;
+        while(i<=n and !primes[i]){
+            i++;
+        }
+        int p2=i;
+        if(p1+p2+1 <=n and primes[p1+p2+1]) count++;
     }
-    ll total=0;
-
-    for(int i=1;i<=n;i++){
-        total+=limit[i]-i;
-    }
-    cout<<total<<'\n';
-
+    
+    if(k>count) cout<<"NO";
+    else cout<<"YES";
 }
 
 int main() {
@@ -51,7 +53,7 @@ int main() {
     cin.tie(nullptr);
     
     int t = 1;
-    if (cin >> t) {
+    if (t) {
         while (t--) {
             solve();
         }

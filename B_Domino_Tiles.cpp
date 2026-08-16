@@ -20,30 +20,27 @@ using pll = pair<ll, ll>;
 const int MOD = 1e9 + 7;
 const ll INF  = 4e18;
 
- 
 void solve() {
-    int n, m;
-    cin >> n >> m;
-    vector<int> limit(n + 1, n+1);
+    int n;cin>>n;
+    string s;cin>>s;
 
-    for(int i=0;i<m;i++){
-        int u,v;
-        cin>>u>>v;
-        if(u>v) swap(u,v);
+    vector<vector<char>> v={{'1','1','0','0'},{'1','0','0','1'},{'0','0','1','1'},{'0','1','1','0'}};
+    bool correct;
+    ll count=0;
 
-        limit[u]=min(limit[u],v);
+    for(int i=0;i<4;i++){
+        correct=true;
+        for(int j=0;j<n;j++){
+            if(s[j]!='?' and s[j]!=v[i][j%4]){
+                correct=false;
+                break;
+            }
+        }
+        if(correct) count++;
+        count%=(998244353);
     }
 
-    for(int i=n-1;i>=1;i--){
-        limit[i]=min(limit[i+1],limit[i]);
-    }
-    ll total=0;
-
-    for(int i=1;i<=n;i++){
-        total+=limit[i]-i;
-    }
-    cout<<total<<'\n';
-
+    cout<<count%(998244353)<<'\n';
 }
 
 int main() {

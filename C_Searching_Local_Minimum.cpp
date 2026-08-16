@@ -20,38 +20,38 @@ using pll = pair<ll, ll>;
 const int MOD = 1e9 + 7;
 const ll INF  = 4e18;
 
- 
+int n;
+unordered_map<int,int> m;
+int ask(int i){
+    if(i==0 || i==n+1) return INT_MAX;
+    if(m.contains(i)) return m[i];
+    cout<<"? "<<i<<endl;
+    int x;cin>>x;
+    return x;
+}
+
 void solve() {
-    int n, m;
-    cin >> n >> m;
-    vector<int> limit(n + 1, n+1);
-
-    for(int i=0;i<m;i++){
-        int u,v;
-        cin>>u>>v;
-        if(u>v) swap(u,v);
-
-        limit[u]=min(limit[u],v);
+    cin>>n;
+    int l=0,r=n+1;
+    while(r-l>1){
+        int m=(l+r)/2;
+        int t=ask(m),tl=ask(m-1),tr=ask(m+1);
+        if(tl>t and tr>t){
+            cout<<"! "<<m<<endl;
+            return;
+        }
+        else if(tl<t){
+            r=m;
+        }
+        else {
+            l=m;
+        }
     }
-
-    for(int i=n-1;i>=1;i--){
-        limit[i]=min(limit[i+1],limit[i]);
-    }
-    ll total=0;
-
-    for(int i=1;i<=n;i++){
-        total+=limit[i]-i;
-    }
-    cout<<total<<'\n';
-
 }
 
 int main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(nullptr);
-    
     int t = 1;
-    if (cin >> t) {
+    if (t) {
         while (t--) {
             solve();
         }

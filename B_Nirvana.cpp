@@ -20,30 +20,27 @@ using pll = pair<ll, ll>;
 const int MOD = 1e9 + 7;
 const ll INF  = 4e18;
 
- 
+ll digitproduct(ll n){
+    ll prod=1;
+    while(n){
+        prod*=(n%10);
+        n/=10;
+    }
+    return prod;
+}
+
 void solve() {
-    int n, m;
-    cin >> n >> m;
-    vector<int> limit(n + 1, n+1);
-
-    for(int i=0;i<m;i++){
-        int u,v;
-        cin>>u>>v;
-        if(u>v) swap(u,v);
-
-        limit[u]=min(limit[u],v);
+    ll n;cin>>n;
+    ll x=n,ans=digitproduct(n);
+    ll k=1;
+    while(x>0){
+        ll possible=(x-1)*k +k-1;
+        ans=max(digitproduct(possible),ans);
+        k*=10;
+        x/=10;
     }
 
-    for(int i=n-1;i>=1;i--){
-        limit[i]=min(limit[i+1],limit[i]);
-    }
-    ll total=0;
-
-    for(int i=1;i<=n;i++){
-        total+=limit[i]-i;
-    }
-    cout<<total<<'\n';
-
+    cout<<ans;
 }
 
 int main() {
@@ -51,7 +48,7 @@ int main() {
     cin.tie(nullptr);
     
     int t = 1;
-    if (cin >> t) {
+    if (t) {
         while (t--) {
             solve();
         }
