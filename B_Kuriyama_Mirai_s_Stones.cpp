@@ -21,36 +21,32 @@ const int MOD = 1e9 + 7;
 const ll INF  = 4e18;
 
 void solve() {
-    int n,a;
-    cin>>n>>a;
-    int zero=(n+1)/2;
-    int one=n/2;
-    int totaladj=zero+one-2;
-    if(a>totaladj){
-        cout<<-1<<'\n';
-        return;
+    int n;cin>>n;
+    vll v(n); for(int i=0;i<n;i++) cin>>v[i];
+    vll u=v;
+    sort(all(u));
+
+    vll prefix_v(n+1);
+    prefix_v[1]=v[0];
+    for(int i=2;i<=n;i++){
+        prefix_v[i]=prefix_v[i-1]+v[i-1];
     }
-    int nalt=n-a-1;
-    string s="";
-    for(int i=0;i<nalt-1;i++){
-        if(i%2==0) {
-            s.append("0");
-            zero--;
+    vll prefix_u(n+1);
+    prefix_u[1]=u[0];
+    for(int i=2;i<=n;i++){
+        prefix_u[i]=prefix_u[i-1]+u[i-1];
+    }
+    int q;cin>>q;
+    while(q--){
+        int l,r,t;cin>>t>>l>>r;
+        if(t==1){
+            cout<<prefix_v[r]-prefix_v[l-1]<<'\n';
         }
-        else {
-            s.append("1");
-            one--;
+        else{
+            cout<<prefix_u[r]-prefix_u[l-1]<<'\n';
         }
     }
-    if(s[s.size()-1]=='1'){
-        for(int i=0;i<zero;i++) s.append("0");
-        for(int i=0;i<one;i++) s.append("1");
-    }
-    else{
-        for(int i=0;i<one;i++) s.append("1");
-        for(int i=0;i<zero;i++) s.append("0");
-    }
-    cout<<s<<'\n';
+
 }
 
 int main() {
@@ -58,7 +54,7 @@ int main() {
     cin.tie(nullptr);
     
     int t = 1;
-    if (cin >> t) {
+    if (t) {
         while (t--) {
             solve();
         }

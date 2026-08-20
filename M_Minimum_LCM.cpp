@@ -21,36 +21,15 @@ const int MOD = 1e9 + 7;
 const ll INF  = 4e18;
 
 void solve() {
-    int n,a;
-    cin>>n>>a;
-    int zero=(n+1)/2;
-    int one=n/2;
-    int totaladj=zero+one-2;
-    if(a>totaladj){
-        cout<<-1<<'\n';
-        return;
-    }
-    int nalt=n-a-1;
-    string s="";
-    for(int i=0;i<nalt-1;i++){
-        if(i%2==0) {
-            s.append("0");
-            zero--;
-        }
-        else {
-            s.append("1");
-            one--;
+    int n;cin>>n;
+    int k=1;
+    for(int i=2;i*i<=n;i++){
+        if(n%i==0){
+            k=n/i;
+            break;
         }
     }
-    if(s[s.size()-1]=='1'){
-        for(int i=0;i<zero;i++) s.append("0");
-        for(int i=0;i<one;i++) s.append("1");
-    }
-    else{
-        for(int i=0;i<one;i++) s.append("1");
-        for(int i=0;i<zero;i++) s.append("0");
-    }
-    cout<<s<<'\n';
+    cout<<k<<' '<<n-k<<'\n';
 }
 
 int main() {
