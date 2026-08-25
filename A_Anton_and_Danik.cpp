@@ -27,14 +27,17 @@ const int INF = 4e18;
 
 void solve() {
     int n;cin>>n;
-    vi v(n); for(int i=0;i<n;++i) cin>>v[i];
-    sort(all(v));
-    int q;cin>>q;
-    while(q--){
-        int x;cin>>x;
-        auto it=upper_bound(all(v),x);
-        cout<<it-v.begin()<<'\n';
+    string s;cin>>s;
+    int ca=0,cd=0;
+    for(auto c: s){
+        if(c=='A') ca++;
+        else cd++;
     }
+    if(ca==cd){
+        cout<<"Friendship";
+        return ;
+    }
+    (ca>cd) ? cout<<"Anton" : cout<<"Danik";
 }
 
 signed main() {
