@@ -20,13 +20,14 @@ using pll = pair<ll, ll>;
 const int MOD = 1e9 + 7;
 const ll INF  = 4e18;
 
-bool binary(int l,int r,int k,vi &v){
-    int x=~0;
-    for(int i=l-1;i<=r-1;i++){
-        x=x & v[i];
-    }
-    if(x>=k) return 1;
-    else return 0;
+int prefix[200005][18];
+
+
+bool query(int l,int r,int k){
+    int p=31-__builtin_clz(r-l+1);
+    int rlt=prefix[l-1][p]&prefix[r-(1<<p)][p];
+    if(rlt>=k) return true;
+    else return false;
 }
 
 void solve() {
@@ -34,6 +35,14 @@ void solve() {
     cin>>n;
     vi v(n);
     for(int i=0;i<n;i++) cin>>v[i];
+
+    for(int i=0;i<n;i++) prefix[i][0]=v[i];
+    for(int k=1;k<18;k++){
+        for(int i=0;i<n-(1<<k)+1;i++){
+            prefix[i][k]=prefix[i][k-1]&prefix[i+(1<<(k-1))][k-1];
+        }
+    }
+
     int q;
     cin>>q;
     while(q--){
@@ -41,15 +50,15 @@ void solve() {
         cin>>l>>k;
         int ans=-1;
         int high=n,low=l;
-        while(high>=low){
-            int mid=low + (high-low)/2;
-            if(binary(l,mid,k,v)){
-                ans=mid;
-                low=mid+1;
+        while(high>low){
+            int mid=low + (high-low+1)/2;
+            if(query(l,mid,k)){
+                low=mid;
             }
             else high=mid-1;
         }
-        cout<<ans<<" ";
+        if(query(l,low,k))cout<<low<<" ";
+        else cout<<-1<<' ';
     }
     cout<<'\n';
 }
