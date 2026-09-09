@@ -20,6 +20,22 @@ using pll = pair<ll, ll>;
 const int MOD = 1e9 + 7;
 const ll INF  = 4e18;
 
+void dfs(int u,int p,int pid, vector<vector<pii>> &graph,vi &dp){
+    for(auto &pr:graph[u]){
+        int v=pr.first;
+        int i=pr.second;
+        
+        if(v==p) continue;
+        if(i>pid){
+            dp[v]=dp[u];
+        }
+        else {
+            dp[v]=dp[u]+1;
+        }
+        dfs(v,u,i,graph,dp);
+    }
+}
+
 void solve() {
     int n;
     cin>>n;
@@ -32,25 +48,16 @@ void solve() {
         cin>>u>>v;
         edge[i]={u,v};
     }
-    active[1]=1;
-    int ans=0;
-    
-    while(count!=n-1){
-        ans++;
-        for(int i=1;i<n;i++){
-            if(!done[i]){
-                int u=edge[i].first;
-                int v=edge[i].second;
-                if(active[u] || active[v]){
-                    active[v]=1;
-                    active[u]=1;
-                    done[i]=1;
-                    count++;
-                }
-            }
-        }
+    vector<vector<pii>> graph(n+1);
+    for(int i=1;i<n;i++){
+        graph[edge[i].first].push_back({edge[i].second,i});
+        graph[edge[i].second].push_back({edge[i].first,i});
     }
-
+    vector<int> dp(n+1);
+    dp[1]=1;
+    dfs(1,0,0,graph,dp);
+    int ans=-1;
+    for(int i=1;i<=n;i++) ans=max(dp[i],ans);
     cout<<ans<<'\n';
 }
 
